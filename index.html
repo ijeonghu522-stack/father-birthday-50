@@ -1852,7 +1852,7 @@ body::before {
                 <article class="letter__card reveal">
                     <p class="letter__to">아버지께</p>
                     <div class="letter__body" id="letter-body"></div>
-                    <p class="letter__sign" id="letter-sign">2026년 11월 19일, 딸 다은 · 아들 우진 올림</p>
+                    <p class="letter__sign" id="letter-sign">2026년 11월 19일, 누나와 저 올림</p>
                     <span class="letter__seal" aria-hidden="true">🎂</span>
                 </article>
 
@@ -1860,17 +1860,17 @@ body::before {
                     <figure class="video-card" id="video-card">
                         <div class="video-card__frame">
                             <video id="video-player" controls playsinline preload="metadata"
-                                   width="720" height="1280" aria-label="다은과 우진이 준비한 1분 축하 영상">
+                                   width="720" height="1280" aria-label="누나와 저가 준비한 1분 축하 영상">
                                 <source src="./birthday50.mp4" type="video/mp4" />
                                 <source src="./birthday50.webm" type="video/webm" />
                             </video>
                             <div class="video-card__cover" id="video-cover">
-                                <span class="video-card__kicker">다은과 우진이 준비한</span>
+                                <span class="video-card__kicker">누나와 저가 준비한</span>
                                 <button class="video-card__play" id="video-play" type="button" aria-label="축하 영상 재생">▶</button>
                                 <span class="video-card__hint">1분 · 음악과 함께</span>
                             </div>
                         </div>
-                        <figcaption>다은과 우진이 만든 1분 · 음악과 함께</figcaption>
+                        <figcaption>누나와 저가 만든 1분 · 나레이션과 음악</figcaption>
                     </figure>
                     <button class="notify" id="notify-btn" type="button">아빠, 이 버튼 눌러주세요 💌</button>
                     <div class="letter__row">
@@ -1925,11 +1925,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794398987;
+window.APP_BUILD_TS = 1794399892;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545685787,
+    "seconds_alive": 1545686692,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
@@ -2023,32 +2023,32 @@ window.APP_DATA = {
         "쉰이라는 숫자가 아직 낯설 만큼,",
         "아버지는 늘 그 자리에서 먼저 일어나고, 늘 마지막에 잠드셨습니다.",
         "",
-        "저희는 아버지의 하루를 다 알지 못합니다.",
+        "누나와 저는 아버지의 하루를 다 알지 못합니다.",
         "새벽에 몇 시에 눈을 뜨셨는지,",
         "힘든 날이 얼마나 많았는지,",
         "그 힘든 날을 아무에게도 말하지 않으셨다는 것도요.",
         "",
         "그래도 몇 가지는 압니다.",
-        "아버지의 시간이 있었기에 지금의 저희가 있다는 것.",
+        "아버지의 시간이 있었기에 지금의 누나와 저가 있다는 것.",
         "",
-        "2012년 6월 7일, 다은이를 처음 안았을 때",
-        "2014년 4월 17일, 우진이를 처음 안았을 때",
-        "아버지는 아마 말없이 오래 웃으셨을 거라고, 저희는 믿고 싶습니다.",
+        "2012년 6월 7일, 누나를 처음 안았을 때",
+        "2014년 4월 17일, 저를 처음 안았을 때",
+        "아버지는 아마 말없이 오래 웃으셨을 거라고, 누나와 저는 믿고 싶습니다.",
         "",
-        "아버지는 저희에게 크게 말하지 않으셨습니다.",
+        "아버지는 누나와 저에게 크게 말하지 않으셨습니다.",
         "대신 밥을 챙기고, 문을 잠그고,",
         "늦은 길에 불을 켜두는 것으로 사랑을 대신하셨습니다.",
         "그 마음을 이제야 조금씩 알아갑니다.",
         "",
-        "그래서 오늘은 저희가 먼저 말하려 합니다.",
+        "그래서 오늘은 누나와 저가 먼저 말하려 합니다.",
         "고맙습니다. 미안합니다. 그리고 사랑합니다.",
         "",
-        "앞으로의 생일은 저희가 더 자주 챙기겠습니다.",
+        "앞으로의 생일은 누나와 저가 더 자주 챙기겠습니다.",
         "아버지가 지금까지 그래 오셨던 것처럼,",
         "말없이 먼저 챙기는 사람이 되겠습니다.",
         "",
         "올해도, 내년에도, 그다음에도",
-        "아버지의 11월 19일은 저희에게 가장 중요한 날입니다.",
+        "아버지의 11월 19일은 누나와 저에게 가장 중요한 날입니다.",
         "",
         "사랑합니다. 그리고 생신, 진심으로 축하드립니다."
     ].join("\n");
@@ -2521,7 +2521,7 @@ window.APP_DATA = {
             var parts = kstParts(new Date());
             var letterYear = BIRTH_YEAR + koreanAgeNow(parts) - 1;
             body.textContent = LETTER.replace(/\{age\}/g, koreanNative(koreanAgeNow(parts)));
-            setText(byId("letter-sign"), letterYear + "년 11월 19일, 딸 다은 · 아들 우진 올림");
+            setText(byId("letter-sign"), letterYear + "년 11월 19일, 누나와 저 올림");
         }
     }
 
