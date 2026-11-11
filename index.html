@@ -997,29 +997,51 @@ img {
     background: #1c130d;
 }
 
-.video-card__play {
+.video-card__cover {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.55rem;
+    padding: 1.2rem;
+    text-align: center;
+    background: radial-gradient(120% 80% at 50% 18%, #fffdf8 0%, #f4e8d6 62%, #ead8bf 100%);
+    transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
+}
+
+.video-card.is-playing .video-card__cover {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.video-card__kicker,
+.video-card__hint {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--brown-mute);
+}
+
+.video-card__play {
     display: grid;
     place-items: center;
     width: 64px;
     height: 64px;
     padding: 0;
-    transform: translate(-50%, -50%);
     border: 0;
     border-radius: 50%;
-    background: rgba(250, 246, 238, 0.94);
-    color: var(--brown);
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: #fffaf3;
     font-size: 1.25rem;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 16px 30px -14px rgba(154, 92, 51, 0.9);
     transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
 }
 
 .video-card__play:hover {
-    transform: translate(-50%, -50%) scale(1.06);
+    transform: scale(1.06);
 }
 
 .video-card__play[hidden] {
@@ -1376,9 +1398,13 @@ body::before {
                                 <source src="./birthday50.mp4" type="video/mp4" />
                                 <source src="./birthday50.webm" type="video/webm" />
                             </video>
-                            <button class="video-card__play" id="video-play" type="button" aria-label="축하 영상 재생">▶</button>
+                            <div class="video-card__cover" id="video-cover">
+                                <span class="video-card__kicker">다은과 우진이 준비한</span>
+                                <button class="video-card__play" id="video-play" type="button" aria-label="축하 영상 재생">▶</button>
+                                <span class="video-card__hint">15초 · 눌러서 재생</span>
+                            </div>
                         </div>
-                        <figcaption>다은과 우진이 준비한 15초</figcaption>
+                        <figcaption>소리 없이 재생됩니다</figcaption>
                     </figure>
                     <button class="notify" id="notify-btn" type="button">아빠, 이 버튼 눌러주세요 💌</button>
                     <div class="letter__row">
@@ -1420,11 +1446,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794397492;
+window.APP_BUILD_TS = 1794397659;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545684292,
+    "seconds_alive": 1545684459,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
