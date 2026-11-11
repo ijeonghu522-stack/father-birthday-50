@@ -1231,6 +1231,386 @@ body::before {
     }
 }
 
+/* ---------------- 50년 타임라인 ---------------- */
+.timeline {
+    background: linear-gradient(180deg, var(--ivory) 0%, #f7eee0 100%);
+}
+
+.timeline__list {
+    position: relative;
+    display: grid;
+    gap: 0.8rem;
+    max-width: 680px;
+    margin: 1.4rem auto 0;
+    padding: 0 0 0 1.45rem;
+    list-style: none;
+}
+
+.timeline__list::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(184, 121, 77, 0.45), rgba(184, 121, 77, 0.15));
+}
+
+.timeline__item {
+    position: relative;
+    padding: 1.05rem 1.15rem;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255, 253, 247, 0.78);
+    box-shadow: 0 14px 30px -26px rgba(58, 42, 31, 0.5);
+}
+
+.timeline__item::before {
+    content: "";
+    position: absolute;
+    left: -1.42rem;
+    top: 1.5rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(184, 121, 77, 0.13);
+}
+
+.timeline__item--now {
+    border-color: rgba(184, 121, 77, 0.35);
+    background: linear-gradient(135deg, #fffdf7, #f6e5d1);
+}
+
+.timeline__item--now::before {
+    background: var(--accent-deep);
+    box-shadow: 0 0 0 5px rgba(184, 121, 77, 0.18);
+}
+
+.timeline__year {
+    margin-bottom: 0.2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--accent-deep);
+    font-variant-numeric: tabular-nums;
+}
+
+.timeline__title {
+    margin: 0 0 0.3rem;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.timeline__text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--brown-soft);
+}
+
+/* ---------------- 케이크와 소원 ---------------- */
+.cake {
+    background: radial-gradient(120% 85% at 50% 12%, #fffaf2 0%, #f7ecdc 58%, #efdcc6 100%);
+}
+
+.cake .section-head {
+    text-align: center;
+}
+
+.cake__stage {
+    position: relative;
+    width: min(100%, 360px);
+    height: 286px;
+    margin: 0.8rem auto 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cake__candles {
+    position: absolute;
+    left: 13%;
+    right: 13%;
+    bottom: 108px;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.candle {
+    position: relative;
+    width: 15px;
+    height: 74px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: repeating-linear-gradient(45deg, var(--candle, #e98a9f) 0 6px, #fff8ea 6px 12px);
+    box-shadow: inset -2px 0 0 rgba(58, 42, 31, 0.12), 0 3px 4px rgba(58, 42, 31, 0.15);
+    cursor: pointer;
+    transition: transform 0.25s var(--ease), filter 0.25s var(--ease);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.candle:nth-child(2n) {
+    height: 66px;
+}
+
+.candle::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -7px;
+    width: 2px;
+    height: 8px;
+    background: #4b3627;
+    transform: translateX(-50%);
+}
+
+.candle__flame {
+    position: absolute;
+    left: 50%;
+    top: -27px;
+    width: 15px;
+    height: 23px;
+    border-radius: 50% 50% 46% 46% / 64% 64% 36% 36%;
+    background: radial-gradient(circle at 50% 68%, #fffbe0 0 24%, #ffcf6b 48%, #ff8b3d 74%, rgba(255, 120, 50, 0) 76%);
+    box-shadow: 0 0 20px 7px rgba(255, 174, 84, 0.48);
+    transform: translateX(-50%);
+    transform-origin: 50% 100%;
+    animation: candle-flicker 1.05s ease-in-out infinite alternate;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.candle.is-out {
+    filter: saturate(0.35) brightness(0.9);
+    transform: translateY(3px);
+}
+
+.candle.is-out .candle__flame {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.15);
+}
+
+.candle:focus-visible {
+    outline: 2px solid var(--accent-deep);
+    outline-offset: 4px;
+}
+
+@keyframes candle-flicker {
+    from { transform: translateX(-50%) scale(1) rotate(-3deg); }
+    to { transform: translateX(-50%) scale(1.08, 0.94) rotate(3deg); }
+}
+
+.cake__cake {
+    position: absolute;
+    left: 50%;
+    bottom: 36px;
+    width: 280px;
+    height: 112px;
+    transform: translateX(-50%);
+}
+
+.cake__frosting {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 2;
+    height: 46px;
+    border-radius: 50% 50% 16px 16px / 34px 34px 10px 10px;
+    background: linear-gradient(180deg, #fffdf6, #f9ecd9);
+    box-shadow: inset 0 -4px 0 rgba(214, 178, 135, 0.2);
+}
+
+.cake__frosting::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 30px;
+    height: 22px;
+    border-radius: 0 0 50% 50%;
+    background: radial-gradient(circle at 12% 0, #fffdf6 0 9px, transparent 10px) 0 0 / 34px 22px repeat-x;
+}
+
+.cake__sponge {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 76px;
+    overflow: hidden;
+    border-radius: 0 0 18px 18px;
+    background: linear-gradient(180deg, #f4dfc3 0%, #ebcda6 52%, #e2bc91 100%);
+}
+
+.cake__sponge::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26px;
+    height: 14px;
+    background: repeating-linear-gradient(180deg, rgba(255, 249, 236, 0.85) 0 5px, rgba(235, 205, 166, 0.9) 5px 10px);
+}
+
+.cake__plate {
+    position: absolute;
+    left: -26px;
+    right: -26px;
+    bottom: -25px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #fffdf8, #efe4d3);
+    box-shadow: 0 16px 18px -14px rgba(58, 42, 31, 0.55);
+}
+
+.cake__hint {
+    min-height: 1.4em;
+    margin-top: 0.3rem;
+    font-size: 0.84rem;
+    text-align: center;
+    color: var(--brown-mute);
+}
+
+.cake__bit {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    z-index: 4;
+    width: 7px;
+    height: 12px;
+    border-radius: 2px;
+    background: var(--bit, #e98a9f);
+    pointer-events: none;
+    animation: cake-burst 2.1s var(--ease) forwards;
+}
+
+@keyframes cake-burst {
+    0% { opacity: 0; transform: translate(0, 0) rotate(0); }
+    12% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, -140px)) rotate(var(--rot, 180deg)); }
+}
+
+.wish-note {
+    display: grid;
+    gap: 0.55rem;
+    width: min(100%, 460px);
+    margin: 1.3rem auto 0;
+    padding: 1rem;
+    border: 1px solid rgba(184, 121, 77, 0.22);
+    border-radius: 16px;
+    background: rgba(255, 253, 247, 0.86);
+    box-shadow: 0 18px 36px -32px rgba(58, 42, 31, 0.6);
+}
+
+.wish-note[hidden],
+.wish-note__saved[hidden] {
+    display: none;
+}
+
+.wish-note__label {
+    font-size: 0.8rem;
+    color: var(--brown-soft);
+}
+
+.wish-note__row {
+    display: flex;
+    gap: 0.45rem;
+}
+
+.wish-note__input {
+    min-width: 0;
+    flex: 1;
+    padding: 0.72rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--paper);
+    color: var(--brown);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+}
+
+.wish-note__input:focus {
+    outline: 2px solid rgba(184, 121, 77, 0.4);
+    outline-offset: 1px;
+}
+
+.wish-note__btn {
+    flex: 0 0 auto;
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 11px;
+    background: var(--accent-deep);
+    color: #fffaf3;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.wish-note__saved {
+    width: min(100%, 460px);
+    margin: 1rem auto 0;
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    background: rgba(255, 253, 247, 0.7);
+    font-family: var(--font-pen);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--brown);
+}
+
+.ghost-btn[aria-pressed="true"] {
+    border-color: rgba(184, 121, 77, 0.5);
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+}
+
+/* ---------------- 마음 보내기 ---------------- */
+.heart-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.heart-float {
+    position: absolute;
+    bottom: 18vh;
+    font-size: 1.35rem;
+    opacity: 0;
+    animation: heart-up 2.3s ease-out forwards;
+}
+
+@keyframes heart-up {
+    0% { opacity: 0; transform: translateY(0) scale(0.55); }
+    18% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-46vh) scale(1.18) rotate(var(--tilt, 0deg)); }
+}
+
+@media (min-width: 560px) {
+    .timeline__item {
+        padding: 1.2rem 1.4rem;
+    }
+
+    .cake__stage {
+        width: 390px;
+        height: 300px;
+    }
+
+    .cake__cake {
+        width: 310px;
+        height: 120px;
+    }
+
+    .cake__candles {
+        left: 12%;
+        right: 12%;
+        bottom: 116px;
+    }
+}
+
 /* ---------------- 데스크톱 ---------------- */
 @media (min-width: 768px) {
     .counter__grid {
@@ -1363,6 +1743,42 @@ body::before {
             </div>
         </section>
 
+        <section id="timeline" class="section timeline">
+            <div class="wrap">
+                <header class="section-head">
+                    <h2 class="section-title">아버지의 50년, 다섯 장면</h2>
+                    <p class="section-sub">한 사람의 시간이 우리의 시간이 되기까지.</p>
+                </header>
+                <ol class="timeline__list">
+                    <li class="timeline__item reveal">
+                        <p class="timeline__year">1977. 11. 19</p>
+                        <h3 class="timeline__title">한 사람이 태어났습니다</h3>
+                        <p class="timeline__text">아직 아무도 모르던, 그러나 우리에게는 가장 중요한 시작.</p>
+                    </li>
+                    <li class="timeline__item reveal" style="--delay: .08s">
+                        <p class="timeline__year">2012. 06. 07</p>
+                        <h3 class="timeline__title">다은이, 아버지를 만나다</h3>
+                        <p class="timeline__text">그날 처음으로 ‘아버지’라는 이름이 생겼습니다.</p>
+                    </li>
+                    <li class="timeline__item reveal" style="--delay: .16s">
+                        <p class="timeline__year">2014. 04. 17</p>
+                        <h3 class="timeline__title">우진이, 아버지를 만나다</h3>
+                        <p class="timeline__text">두 사람의 아버지가 되어, 조금 더 단단해진 사람.</p>
+                    </li>
+                    <li class="timeline__item reveal" style="--delay: .24s">
+                        <p class="timeline__year">2026. 11. 19</p>
+                        <h3 class="timeline__title">쉰 번째 생일</h3>
+                        <p class="timeline__text">여전히 우리보다 먼저 일어나고, 여전히 마지막에 잠드는 사람.</p>
+                    </li>
+                    <li class="timeline__item timeline__item--now reveal" style="--delay: .32s">
+                        <p class="timeline__year">오늘</p>
+                        <h3 class="timeline__title">그래서 우리가 여기 모였습니다</h3>
+                        <p class="timeline__text">고맙다고, 사랑한다고 말하러.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
         <section id="memories" class="section memories">
             <div class="wrap">
                 <header class="section-head">
@@ -1385,6 +1801,33 @@ body::before {
                     2014년 4월, 동생이 왔습니다.<br />
                     그때부터 아버지는 두 사람의 아버지였습니다.
                 </p>
+            </div>
+        </section>
+
+        <section id="cake" class="section cake">
+            <div class="wrap">
+                <header class="section-head">
+                    <h2 class="section-title">아버지의 케이크</h2>
+                    <p class="section-sub">촛불 다섯 개를 하나씩 눌러 끄고, 소원을 남겨주세요.</p>
+                </header>
+                <div class="cake__stage" id="cake-stage">
+                    <div class="cake__candles" id="candles" aria-label="생일 촛불 다섯 개"></div>
+                    <div class="cake__cake" aria-hidden="true">
+                        <span class="cake__frosting"></span>
+                        <span class="cake__sponge"></span>
+                        <span class="cake__plate"></span>
+                    </div>
+                </div>
+                <p class="cake__hint" id="cake-hint" role="status">촛불 5개 · 하나씩 눌러보세요</p>
+                <form class="wish-note" id="wish-form" hidden>
+                    <label class="wish-note__label" for="wish-input">아버지께 남길 한마디</label>
+                    <div class="wish-note__row">
+                        <input class="wish-note__input" id="wish-input" type="text" maxlength="80"
+                               autocomplete="off" placeholder="예: 아빠, 올해도 고마워요" />
+                        <button class="wish-note__btn" type="submit">남기기</button>
+                    </div>
+                </form>
+                <p class="wish-note__saved" id="wish-saved" hidden></p>
             </div>
         </section>
 
@@ -1417,28 +1860,32 @@ body::before {
                     <figure class="video-card" id="video-card">
                         <div class="video-card__frame">
                             <video id="video-player" controls playsinline preload="metadata"
-                                   width="720" height="1280" aria-label="다은과 우진이 준비한 15초 축하 영상">
+                                   width="720" height="1280" aria-label="다은과 우진이 준비한 1분 축하 영상">
                                 <source src="./birthday50.mp4" type="video/mp4" />
                                 <source src="./birthday50.webm" type="video/webm" />
                             </video>
                             <div class="video-card__cover" id="video-cover">
                                 <span class="video-card__kicker">다은과 우진이 준비한</span>
                                 <button class="video-card__play" id="video-play" type="button" aria-label="축하 영상 재생">▶</button>
-                                <span class="video-card__hint">15초 · 눌러서 재생</span>
+                                <span class="video-card__hint">1분 · 음악과 함께</span>
                             </div>
                         </div>
-                        <figcaption>소리 없이 재생됩니다</figcaption>
+                        <figcaption>다은과 우진이 만든 1분 · 음악과 함께</figcaption>
                     </figure>
                     <button class="notify" id="notify-btn" type="button">아빠, 이 버튼 눌러주세요 💌</button>
                     <div class="letter__row">
                         <button class="ghost-btn" id="music-btn" type="button" aria-pressed="false">🎵 생일 노래</button>
                         <button class="ghost-btn" id="share-btn" type="button">🔗 링크 공유</button>
                     </div>
+                    <div class="letter__row">
+                        <button class="ghost-btn" id="read-btn" type="button" aria-pressed="false">🔊 편지 읽어주기</button>
+                        <button class="ghost-btn" id="heart-btn" type="button">💗 마음 <span id="heart-count">0</span></button>
+                    </div>
                     <div class="video-links">
                         <a class="ghost-btn" id="video-link" href="./birthday50.mp4" download hidden>🎬 MP4 저장</a>
                         <a class="ghost-btn" id="video-link-webm" href="./birthday50.webm" download hidden>WebM</a>
                     </div>
-                    <p class="video-note">MP4는 아이폰에서도 바로 재생됩니다 · 15초</p>
+                    <p class="video-note">MP4는 아이폰에서도 바로 재생됩니다 · 1분</p>
                     <div class="downloads" id="downloads">
                         <p class="downloads__label">앱으로 받기</p>
                         <div class="downloads__row">
@@ -1460,6 +1907,7 @@ body::before {
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="heart-layer" id="heart-layer" aria-hidden="true"></div>
 
     <div id="easteregg" class="egg" hidden>
         <div class="egg__backdrop" data-egg-close></div>
@@ -1477,11 +1925,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794398158;
+window.APP_BUILD_TS = 1794398987;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545684958,
+    "seconds_alive": 1545685787,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
@@ -2539,6 +2987,64 @@ window.APP_DATA = {
         });
     }
 
+    function isTypingTarget(target) {
+        if (!target) {
+            return false;
+        }
+        var tag = String(target.tagName || "").toUpperCase();
+        return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable === true;
+    }
+
+    /* “아빠”라고 입력하면 야옹이가 나타납니다. */
+    function registerTypingTrigger() {
+        var buffer = "";
+
+        function check(value) {
+            buffer = (buffer + String(value || "")).slice(-12);
+            if (buffer.indexOf("아빠") !== -1) {
+                buffer = "";
+                if (!eggState.open) {
+                    openEgg({ gesture: true });
+                }
+            }
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+                return;
+            }
+            if (isTypingTarget(event.target)) {
+                return;
+            }
+            check(event.key);
+        });
+
+        document.addEventListener("compositionend", function (event) {
+            if (isTypingTarget(event.target)) {
+                return;
+            }
+            check(event.data);
+        });
+    }
+
+    /* 푸터를 두 번 톡톡 누르면 또 하나. */
+    function registerFooterTrigger() {
+        var footer = document.querySelector(".site-footer");
+        if (!footer) {
+            return;
+        }
+        var lastTap = 0;
+        footer.addEventListener("pointerup", function () {
+            var now = Date.now();
+            if (now - lastTap < 520) {
+                lastTap = 0;
+                openEgg({ gesture: true });
+            } else {
+                lastTap = now;
+            }
+        });
+    }
+
     function initEgg() {
         eggState.root = byId("easteregg");
         if (!eggState.root) {
@@ -2565,6 +3071,8 @@ window.APP_DATA = {
 
         registerFiftyTrigger();
         registerLongPressTrigger();
+        registerTypingTrigger();
+        registerFooterTrigger();
 
         window.happyBirthday = function () {
             openEgg();
@@ -2830,6 +3338,270 @@ window.APP_DATA = {
         }
     }
 
+    /* ---------------- 저장소 (소원 · 마음) ---------------- */
+    var WISH_KEY = "father-birthday-wish-v1";
+    var HEART_KEY = "father-birthday-hearts-v1";
+
+    function readStore(key) {
+        try {
+            return window.localStorage.getItem(key);
+        } catch (err) {
+            return null;
+        }
+    }
+
+    function writeStore(key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    /* ---------------- 케이크 · 촛불 · 소원 ---------------- */
+    function initCake() {
+        var stage = byId("cake-stage");
+        var host = byId("candles");
+        var hint = byId("cake-hint");
+        var form = byId("wish-form");
+        var input = byId("wish-input");
+        var saved = byId("wish-saved");
+        if (!stage || !host) {
+            return;
+        }
+
+        var colors = ["#e98a9f", "#ffb37a", "#a99bf0", "#8fd3b6", "#f0c987"];
+        var total = 5;
+        var out = 0;
+        var done = false;
+        var tapTimes = [];
+
+        function showSavedWish() {
+            var value = readStore(WISH_KEY);
+            if (!saved) {
+                return;
+            }
+            if (!value) {
+                saved.hidden = true;
+                saved.textContent = "";
+                return;
+            }
+            saved.hidden = false;
+            saved.textContent = "아버지께: “" + value + "”";
+        }
+
+        function burst() {
+            if (prefersReducedMotion()) {
+                return;
+            }
+            var bits = 28;
+            for (var i = 0; i < bits; i += 1) {
+                var bit = document.createElement("i");
+                bit.className = "cake__bit";
+                bit.style.background = colors[i % colors.length];
+                bit.style.setProperty("--dx", (Math.random() * 300 - 150).toFixed(0) + "px");
+                bit.style.setProperty("--dy", (-70 - Math.random() * 170).toFixed(0) + "px");
+                bit.style.setProperty("--rot", (Math.random() * 720 - 360).toFixed(0) + "deg");
+                bit.style.animationDelay = (Math.random() * 0.18).toFixed(2) + "s";
+                stage.appendChild(bit);
+                window.setTimeout((function (node) {
+                    return function () {
+                        if (node.parentNode) {
+                            node.parentNode.removeChild(node);
+                        }
+                    };
+                })(bit), 2600);
+            }
+        }
+
+        function complete() {
+            if (done) {
+                return;
+            }
+            done = true;
+            stage.classList.add("is-done");
+            setText(hint, "촛불을 모두 껐어요. 이제 아버지께 한마디 남겨주세요.");
+            burst();
+            if (form) {
+                form.hidden = false;
+            }
+            showSavedWish();
+            showToast("쉰 번째 촛불을 모두 껐어요 🎂");
+        }
+
+        function blowOut(button) {
+            if (button.classList.contains("is-out")) {
+                return;
+            }
+            button.classList.add("is-out");
+            button.setAttribute("aria-pressed", "true");
+            out += 1;
+            setText(hint, "촛불 " + (total - out) + "개 남았어요");
+            if (out >= total) {
+                complete();
+            }
+        }
+
+        for (var i = 0; i < total; i += 1) {
+            (function (index) {
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "candle";
+                button.style.setProperty("--candle", colors[index]);
+                button.setAttribute("aria-label", (index + 1) + "번째 촛불 끄기");
+                button.setAttribute("aria-pressed", "false");
+
+                var flame = document.createElement("span");
+                flame.className = "candle__flame";
+                flame.setAttribute("aria-hidden", "true");
+                button.appendChild(flame);
+
+                button.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    blowOut(button);
+                });
+                host.appendChild(button);
+            })(i);
+        }
+
+        /* 케이크 몸통을 세 번 톡톡 누르면 야옹이가 찾아옵니다. */
+        stage.addEventListener("pointerup", function (event) {
+            var target = event.target;
+            if (target && target.closest && target.closest(".candle")) {
+                return;
+            }
+            var now = Date.now();
+            tapTimes = tapTimes.filter(function (stamp) {
+                return now - stamp < 1600;
+            });
+            tapTimes.push(now);
+            if (tapTimes.length >= 3) {
+                tapTimes = [];
+                openEgg({ gesture: true });
+            }
+        });
+
+        if (form && input) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var value = input.value.trim();
+                if (!value) {
+                    showToast("아버지께 남길 한마디를 적어주세요");
+                    input.focus();
+                    return;
+                }
+                var stored = writeStore(WISH_KEY, value.slice(0, 80));
+                showSavedWish();
+                if (stored) {
+                    showToast("소원을 남겼어요. 아버지께 닿을 거예요 💌");
+                } else {
+                    showToast("이 브라우저에는 저장하지 못했지만, 마음은 남았어요");
+                }
+                form.reset();
+            });
+        }
+
+        showSavedWish();
+    }
+
+    /* ---------------- 편지 낭독 · 마음 보내기 ---------------- */
+    function initLetterExtras() {
+        var readButton = byId("read-btn");
+        var body = byId("letter-body");
+        var speech = window.speechSynthesis;
+        var Utterance = window.SpeechSynthesisUtterance;
+
+        if (readButton) {
+            if (!speech || typeof Utterance !== "function") {
+                readButton.hidden = true;
+            } else {
+                var resetRead = function () {
+                    readButton.textContent = "🔊 편지 읽어주기";
+                    readButton.setAttribute("aria-pressed", "false");
+                };
+
+                readButton.addEventListener("click", function () {
+                    if (speech.speaking || speech.pending) {
+                        speech.cancel();
+                        resetRead();
+                        return;
+                    }
+                    var letterText = body ? body.textContent.trim() : "";
+                    if (!letterText) {
+                        showToast("편지를 아직 불러오지 못했어요");
+                        return;
+                    }
+
+                    var utter = new Utterance(letterText);
+                    utter.lang = "ko-KR";
+                    utter.rate = 0.94;
+                    utter.pitch = 0.96;
+                    var voices = speech.getVoices ? speech.getVoices() : [];
+                    var korean = null;
+                    for (var i = 0; i < voices.length; i += 1) {
+                        if (/^ko/i.test(voices[i].lang || "")) {
+                            korean = voices[i];
+                            break;
+                        }
+                    }
+                    if (korean) {
+                        utter.voice = korean;
+                    }
+                    utter.onend = resetRead;
+                    utter.onerror = resetRead;
+                    speech.cancel();
+                    speech.speak(utter);
+                    readButton.textContent = "⏹ 읽기 멈추기";
+                    readButton.setAttribute("aria-pressed", "true");
+                });
+            }
+        }
+
+        var heartButton = byId("heart-btn");
+        var heartCount = byId("heart-count");
+        var layer = byId("heart-layer");
+        var count = parseInt(readStore(HEART_KEY), 10);
+        if (isNaN(count) || count < 0) {
+            count = 0;
+        }
+        setText(heartCount, formatNumber(count));
+
+        function floatHearts() {
+            if (!layer || prefersReducedMotion()) {
+                return;
+            }
+            var marks = ["💗", "💛", "🤍", "💗"];
+            for (var i = 0; i < 9; i += 1) {
+                var heart = document.createElement("span");
+                heart.className = "heart-float";
+                heart.textContent = marks[i % marks.length];
+                heart.style.left = (44 + Math.random() * 12).toFixed(1) + "%";
+                heart.style.fontSize = (1.05 + Math.random() * 0.75).toFixed(2) + "rem";
+                heart.style.animationDelay = (Math.random() * 0.35).toFixed(2) + "s";
+                heart.style.setProperty("--tilt", (Math.random() * 50 - 25).toFixed(0) + "deg");
+                layer.appendChild(heart);
+                window.setTimeout((function (node) {
+                    return function () {
+                        if (node.parentNode) {
+                            node.parentNode.removeChild(node);
+                        }
+                    };
+                })(heart), 2900);
+            }
+        }
+
+        if (heartButton && heartCount) {
+            heartButton.addEventListener("click", function () {
+                count += 1;
+                writeStore(HEART_KEY, String(count));
+                setText(heartCount, formatNumber(count));
+                floatHearts();
+                showToast("마음이 아버지께 닿았어요 💗 " + formatNumber(count) + "번째");
+            });
+        }
+    }
+
     /* ---------------- 부트 ---------------- */
     function init() {
         initDday();
@@ -2838,6 +3610,8 @@ window.APP_DATA = {
         renderFamily();
         initFiftieth();
         renderLetter();
+        initCake();
+        initLetterExtras();
         renderDday();
         renderCounter(Date.now());
         startTicker();
@@ -2870,6 +3644,9 @@ window.APP_DATA = {
         if (wishObserver) {
             wishObserver.disconnect();
             wishObserver = null;
+        }
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
         }
     });
 
