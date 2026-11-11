@@ -973,6 +973,66 @@ img {
     color: var(--brown-mute);
 }
 
+.video-card {
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto 0.4rem;
+}
+
+.video-card__frame {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    aspect-ratio: 9 / 16;
+    border-radius: 20px;
+    background: #1c130d;
+    box-shadow: 0 26px 44px -30px rgba(58, 42, 31, 0.9);
+}
+
+.video-card video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #1c130d;
+}
+
+.video-card__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    transform: translate(-50%, -50%);
+    border: 0;
+    border-radius: 50%;
+    background: rgba(250, 246, 238, 0.94);
+    color: var(--brown);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.7);
+    transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.video-card__play:hover {
+    transform: translate(-50%, -50%) scale(1.06);
+}
+
+.video-card__play[hidden] {
+    display: none;
+}
+
+.video-card figcaption {
+    margin-top: 0.7rem;
+    font-size: 0.78rem;
+    text-align: center;
+    color: var(--brown-mute);
+}
+
 /* ---------------- 편지 왁스 실 ---------------- */
 .letter__seal {
     position: absolute;
@@ -1309,6 +1369,17 @@ body::before {
                 </article>
 
                 <div class="letter__actions">
+                    <figure class="video-card" id="video-card">
+                        <div class="video-card__frame">
+                            <video id="video-player" controls playsinline preload="metadata"
+                                   width="720" height="1280" aria-label="다은과 우진이 준비한 15초 축하 영상">
+                                <source src="./birthday50.mp4" type="video/mp4" />
+                                <source src="./birthday50.webm" type="video/webm" />
+                            </video>
+                            <button class="video-card__play" id="video-play" type="button" aria-label="축하 영상 재생">▶</button>
+                        </div>
+                        <figcaption>다은과 우진이 준비한 15초</figcaption>
+                    </figure>
                     <button class="notify" id="notify-btn" type="button">아빠, 이 버튼 눌러주세요 💌</button>
                     <div class="letter__row">
                         <button class="ghost-btn" id="music-btn" type="button" aria-pressed="false">🎵 생일 노래</button>
@@ -1349,11 +1420,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794396629;
+window.APP_BUILD_TS = 1794397492;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545683429,
+    "seconds_alive": 1545684292,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
@@ -1484,6 +1555,10 @@ window.APP_DATA = {
     /* AI 한마디 백엔드(FastAPI)를 함께 배포했을 때만 true 로 바꾸세요.
      * false 이면 /api/wish 요청을 아예 보내지 않습니다(정적 배포 기본값). */
     var WISH_ENABLED = false;
+
+    /* 알림 백엔드(FastAPI /api/notify)를 함께 배포했을 때만 true.
+     * false 이면 버튼이 서버 대신 축하 이스터에그를 엽니다. */
+    var NOTIFY_ENABLED = false;
 
     /* ======================================================================
        이하 로직
@@ -2031,6 +2106,15 @@ window.APP_DATA = {
         var busy = false;
 
         button.addEventListener("click", function () {
+            if (!NOTIFY_ENABLED) {
+                var celebrate = window.__APP && window.__APP.openEgg;
+                if (typeof celebrate === "function") {
+                    celebrate();
+                }
+                button.textContent = "다시 축하해 드리기 🎉";
+                setText(status, "아빠, 생신 축하드려요 💌");
+                return;
+            }
             if (busy) {
                 return;
             }
@@ -2641,13 +2725,42 @@ window.APP_DATA = {
         });
     }
 
-    /* 영상은 빌드에 항상 포함되므로 HEAD 확인 요청 없이 바로 노출합니다.
-     * (방문당 같은 출처 요청 2건을 아끼고, 파일이 없을 때만 숨기려면
-     *  build.py 에서 링크 자체를 빼면 됩니다.) */
+    /* 영상은 빌드에 항상 포함되므로 HEAD 확인 요청 없이 바로 노출합니다. */
     function initVideoLink() {
         [byId("video-link"), byId("video-link-webm")].forEach(function (link) {
             if (link) {
                 link.hidden = false;
+            }
+        });
+
+        var player = byId("video-player");
+        var playButton = byId("video-play");
+        var card = byId("video-card");
+        if (!player) {
+            return;
+        }
+
+        function startPlayback() {
+            var promise = player.play();
+            if (promise && typeof promise.catch === "function") {
+                promise.catch(function () {});
+            }
+        }
+
+        if (playButton) {
+            playButton.addEventListener("click", startPlayback);
+        }
+        player.addEventListener("play", function () {
+            if (playButton) {
+                playButton.hidden = true;
+            }
+            if (card) {
+                card.classList.add("is-playing");
+            }
+        });
+        player.addEventListener("error", function () {
+            if (card) {
+                card.hidden = true;
             }
         });
     }
