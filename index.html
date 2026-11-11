@@ -1637,6 +1637,111 @@ body::before {
     }
 }
 
+/* ---------------- 숨은 비밀 ---------------- */
+body.secret-open {
+    overflow: hidden;
+}
+
+.secret {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    display: grid;
+    place-items: center;
+    padding: 1.2rem;
+}
+
+.secret[hidden] {
+    display: none;
+}
+
+.secret__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 19, 13, 0.78);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+}
+
+.secret__card {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+    gap: 0.7rem;
+    width: min(100%, 390px);
+    padding: 2rem 1.5rem 1.4rem;
+    border: 1px solid rgba(184, 121, 77, 0.35);
+    border-radius: 20px;
+    background: linear-gradient(160deg, #fffdf7, #f4e4cf);
+    box-shadow: 0 30px 70px -28px rgba(0, 0, 0, 0.65);
+    text-align: center;
+    animation: secret-in 0.35s var(--ease) both;
+}
+
+@keyframes secret-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
+.secret__emoji {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.secret__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--brown);
+}
+
+.secret__text {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--brown-soft);
+}
+
+.secret__close {
+    margin-top: 0.3rem;
+    padding: 0.6rem 1.2rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent-deep);
+    color: #fffaf3;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+.music-note {
+    margin-top: -0.2rem;
+    font-size: 0.72rem;
+    text-align: center;
+    color: var(--brown-mute);
+}
+
+#read-speed {
+    flex: 0 0 4.4rem;
+}
+
+#read-btn {
+    flex: 1.25;
+}
+
+#heart-btn {
+    flex: 0 0 4.2rem;
+}
+
+.site-footer__hint {
+    margin-top: 0.5rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--brown-mute);
+    opacity: 0.8;
+}
+
 /* ---------------- 접근성: 동작 최소화 ---------------- */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -1874,12 +1979,14 @@ body::before {
                     </figure>
                     <button class="notify" id="notify-btn" type="button">아빠, 이 버튼 눌러주세요 💌</button>
                     <div class="letter__row">
-                        <button class="ghost-btn" id="music-btn" type="button" aria-pressed="false">🎵 생일 노래</button>
+                        <button class="ghost-btn" id="music-btn" type="button" aria-pressed="false" title="피아노 · 소금 · 단소 · 현악 · 타악 편곡">🎵 생일 노래</button>
                         <button class="ghost-btn" id="share-btn" type="button">🔗 링크 공유</button>
                     </div>
+                    <p class="music-note">피아노 · 소금 · 단소 · 현악 · 타악으로 편곡한 생일 노래</p>
                     <div class="letter__row">
-                        <button class="ghost-btn" id="read-btn" type="button" aria-pressed="false">🔊 편지 읽어주기</button>
-                        <button class="ghost-btn" id="heart-btn" type="button">💗 마음 <span id="heart-count">0</span></button>
+                        <button class="ghost-btn" id="read-btn" type="button" aria-pressed="false">🔊 읽기</button>
+                        <button class="ghost-btn" id="read-speed" type="button" aria-label="편지 낭독 속도">1.2배속</button>
+                        <button class="ghost-btn" id="heart-btn" type="button">💗 <span id="heart-count">0</span></button>
                     </div>
                     <div class="video-links">
                         <a class="ghost-btn" id="video-link" href="./birthday50.mp4" download hidden>🎬 MP4 저장</a>
@@ -1904,9 +2011,20 @@ body::before {
     <footer class="site-footer">
         <p id="footer-span">1977. 11. 19 — 2026. 11. 19</p>
         <p>딸 천다은 · 아들 천우진</p>
+        <p class="site-footer__hint">숨은 비밀 10개 · 아무 데나 눌러보세요</p>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div id="secret" class="secret" hidden>
+        <div class="secret__backdrop" data-secret-close></div>
+        <div class="secret__card" role="dialog" aria-modal="true" aria-labelledby="secret-title">
+            <span class="secret__emoji" id="secret-emoji" aria-hidden="true">✨</span>
+            <h2 class="secret__title" id="secret-title"></h2>
+            <p class="secret__text" id="secret-text"></p>
+            <button class="secret__close" id="secret-close" type="button">닫기 ✕</button>
+        </div>
+    </div>
     <div class="heart-layer" id="heart-layer" aria-hidden="true"></div>
 
     <div id="easteregg" class="egg" hidden>
@@ -1925,11 +2043,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794400102;
+window.APP_BUILD_TS = 1794400769;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545686902,
+    "seconds_alive": 1545687569,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
@@ -2056,6 +2174,21 @@ window.APP_DATA = {
         "",
         "올해도, 내년에도, 그다음에도",
         "아버지의 11월 19일은 누나와 저에게 가장 중요한 날입니다.",
+        "",
+        "어릴 때는 아버지가 세상에서 가장 큰 사람인 줄 알았습니다.",
+        "손을 잡으면 어디든 갈 수 있을 것 같았고,",
+        "아버지가 웃으면 그날은 무슨 일이 있어도 괜찮은 날이었습니다.",
+        "",
+        "크면서 알게 된 것은, 아버지도 처음 사는 인생을",
+        "누나와 저를 위해 계속 배워오셨다는 사실입니다.",
+        "",
+        "이제는 누나와 저가 아버지께 무엇을 해드릴 수 있을까 생각합니다.",
+        "거창한 것보다 자주 전화하고, 자주 밥을 먹고,",
+        "아버지의 이야기를 더 많이 듣는 일부터 하고 싶습니다.",
+        "",
+        "내년 생일에는 더 크게 웃고,",
+        "그다음 생일에는 더 오래 곁에 있겠습니다.",
+        "아버지가 누나와 저를 기다리게 하지 않겠습니다.",
         "",
         "사랑합니다. 그리고 생신, 진심으로 축하드립니다."
     ].join("\n");
@@ -3080,6 +3213,7 @@ window.APP_DATA = {
         registerLongPressTrigger();
         registerTypingTrigger();
         registerFooterTrigger();
+        initSecrets();
 
         window.happyBirthday = function () {
             openEgg();
@@ -3179,45 +3313,165 @@ window.APP_DATA = {
 
     function startMusic() {
         var AudioCtor = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtor) {
-            return;
-        }
+        if (!AudioCtor) { return; }
         try {
-            if (!audioContext) {
-                audioContext = new AudioCtor();
-            }
+            if (!audioContext) { audioContext = new AudioCtor(); }
             if (audioContext.state === "suspended" && typeof audioContext.resume === "function") {
                 audioContext.resume().catch(function () {});
             }
-        } catch (err) {
-            return;
-        }
-        if (audioContext.state === "closed") {
-            return;
-        }
+        } catch (err) { return; }
+        if (audioContext.state === "closed") { return; }
 
         var master = audioContext.createGain();
-        master.gain.value = 0.09;
-        master.connect(audioContext.destination);
+        master.gain.value = 0.11;
+        var compressor = audioContext.createDynamicsCompressor();
+        compressor.threshold.value = -18;
+        compressor.ratio.value = 4;
+        master.connect(compressor);
+        compressor.connect(audioContext.destination);
 
         var beat = 0.52;
-        var cursor = audioContext.currentTime + 0.08;
-        MELODY.forEach(function (note) {
-            var frequency = note[0];
-            var duration = note[1] * beat;
-            var oscillator = audioContext.createOscillator();
+        var t0 = audioContext.currentTime + 0.12;
+        var chords = [
+            [261.63, 329.63, 392.0], [196.0, 246.94, 293.66],
+            [220.0, 261.63, 329.63], [174.61, 220.0, 261.63]
+        ];
+        var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+        var noiseData = noiseBuffer.getChannelData(0);
+        for (var n = 0; n < noiseData.length; n += 1) {
+            noiseData[n] = Math.random() * 2 - 1;
+        }
+
+        function collect(node) { musicNodes.push(node); return node; }
+
+        function piano(freq, start, dur, level) {
+            [1, 2, 3].forEach(function (harmonic, h) {
+                var osc = audioContext.createOscillator();
+                var gain = audioContext.createGain();
+                osc.type = h === 0 ? "triangle" : "sine";
+                osc.frequency.value = freq * harmonic;
+                gain.gain.setValueAtTime(0.0001, start);
+                gain.gain.exponentialRampToValueAtTime(level / (h + 1.4), start + 0.012);
+                gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+                osc.connect(gain); gain.connect(master);
+                osc.start(start); osc.stop(start + dur + 0.03);
+                collect(osc);
+            });
+        }
+
+        function flute(freq, start, dur, level, breath) {
+            [1, 1.003].forEach(function (detune, d) {
+                var osc = audioContext.createOscillator();
+                var gain = audioContext.createGain();
+                osc.type = d === 0 ? "sine" : "triangle";
+                osc.frequency.value = freq * detune;
+                gain.gain.setValueAtTime(0.0001, start);
+                gain.gain.exponentialRampToValueAtTime(level / (d + 1.3), start + 0.055);
+                gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+                osc.connect(gain); gain.connect(master);
+                osc.start(start); osc.stop(start + dur + 0.05);
+                collect(osc);
+            });
+            if (breath) {
+                var src = audioContext.createBufferSource();
+                var bp = audioContext.createBiquadFilter();
+                var ng = audioContext.createGain();
+                src.buffer = noiseBuffer;
+                bp.type = "bandpass"; bp.frequency.value = freq * 2; bp.Q.value = 2.5;
+                ng.gain.setValueAtTime(0.0001, start);
+                ng.gain.exponentialRampToValueAtTime(level * 0.12, start + 0.04);
+                ng.gain.exponentialRampToValueAtTime(0.0001, start + dur * 0.7);
+                src.connect(bp); bp.connect(ng); ng.connect(master);
+                src.start(start); src.stop(start + dur);
+                collect(src);
+            }
+        }
+
+        function pad(freq, start, dur, level) {
+            [0.997, 1.003].forEach(function (detune) {
+                var osc = audioContext.createOscillator();
+                var filter = audioContext.createBiquadFilter();
+                var gain = audioContext.createGain();
+                osc.type = "sawtooth";
+                osc.frequency.value = freq * detune;
+                filter.type = "lowpass"; filter.frequency.value = 1200;
+                gain.gain.setValueAtTime(0.0001, start);
+                gain.gain.linearRampToValueAtTime(level, start + 0.6);
+                gain.gain.linearRampToValueAtTime(0.0001, start + dur);
+                osc.connect(filter); filter.connect(gain); gain.connect(master);
+                osc.start(start); osc.stop(start + dur + 0.05);
+                collect(osc);
+            });
+        }
+
+        function bass(freq, start, dur, level) {
+            var osc = audioContext.createOscillator();
             var gain = audioContext.createGain();
-            oscillator.type = "sine";
-            oscillator.frequency.setValueAtTime(frequency, cursor);
-            gain.gain.setValueAtTime(0.0001, cursor);
-            gain.gain.exponentialRampToValueAtTime(1, cursor + 0.03);
-            gain.gain.exponentialRampToValueAtTime(0.0001, cursor + duration);
-            oscillator.connect(gain);
-            gain.connect(master);
-            oscillator.start(cursor);
-            oscillator.stop(cursor + duration + 0.05);
-            musicNodes.push(oscillator);
-            cursor += duration;
+            osc.type = "sine"; osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(level, start + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+            osc.connect(gain); gain.connect(master);
+            osc.start(start); osc.stop(start + dur + 0.05);
+            collect(osc);
+        }
+
+        function shaker(start, level) {
+            var src = audioContext.createBufferSource();
+            var hp = audioContext.createBiquadFilter();
+            var gain = audioContext.createGain();
+            src.buffer = noiseBuffer;
+            hp.type = "highpass"; hp.frequency.value = 5200;
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(level, start + 0.008);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.11);
+            src.connect(hp); hp.connect(gain); gain.connect(master);
+            src.start(start); src.stop(start + 0.13);
+            collect(src);
+        }
+
+        function kick(start, level) {
+            var osc = audioContext.createOscillator();
+            var gain = audioContext.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(120, start);
+            osc.frequency.exponentialRampToValueAtTime(45, start + 0.12);
+            gain.gain.setValueAtTime(level, start);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.2);
+            osc.connect(gain); gain.connect(master);
+            osc.start(start); osc.stop(start + 0.22);
+            collect(osc);
+        }
+
+        function verse(start, full) {
+            var cursor = start;
+            MELODY.forEach(function (note, index) {
+                var freq = note[0];
+                var dur = note[1] * beat;
+                piano(freq, cursor, dur * 0.98, 0.13);
+                if (full || index % 2 === 0) {
+                    flute(freq * 2, cursor + 0.015, dur * 0.9, 0.055, index % 3 === 0);
+                }
+                if (note[1] >= 1) {
+                    piano(freq * 0.75, cursor, dur * 0.9, 0.045);
+                }
+                if (index % 4 === 0) { shaker(cursor, 0.026); }
+                cursor += dur;
+            });
+            return cursor;
+        }
+
+        for (var bar = 0; bar < 14; bar += 1) {
+            var barStart = t0 + bar * 4 * beat;
+            var chord = chords[bar % 4];
+            chord.forEach(function (freq) { pad(freq / 2, barStart, 4 * beat * 1.05, 0.018); });
+            bass(chord[0] / 4, barStart, 3.8 * beat, 0.055);
+            if (bar % 2 === 0) { kick(barStart, 0.06); }
+        }
+        verse(t0 + 0.7, false);
+        verse(t0 + 13.4, true);
+        [261.63, 329.63, 392.0, 523.25].forEach(function (freq) {
+            piano(freq, t0 + 26.2, 2.4, 0.08);
         });
 
         musicPlaying = true;
@@ -3226,10 +3480,7 @@ window.APP_DATA = {
             button.setAttribute("aria-pressed", "true");
             button.textContent = "⏸ 노래 끄기";
         }
-        var total = (cursor - audioContext.currentTime) * 1000 + 500;
-        musicTimer = window.setTimeout(function () {
-            stopMusic();
-        }, total);
+        musicTimer = window.setTimeout(function () { stopMusic(); }, 29000);
     }
 
     function initMusic() {
@@ -3515,6 +3766,7 @@ window.APP_DATA = {
     /* ---------------- 편지 낭독 · 마음 보내기 ---------------- */
     function initLetterExtras() {
         var readButton = byId("read-btn");
+        var speedButton = byId("read-speed");
         var body = byId("letter-body");
         var speech = window.speechSynthesis;
         var Utterance = window.SpeechSynthesisUtterance;
@@ -3523,10 +3775,40 @@ window.APP_DATA = {
             if (!speech || typeof Utterance !== "function") {
                 readButton.hidden = true;
             } else {
+                var speeds = [0.8, 1.0, 1.2, 1.5];
+                var speedIndex = 2;
+                var savedSpeed = parseFloat(readStore("father-letter-speed"));
+                if (!isNaN(savedSpeed)) {
+                    for (var s = 0; s < speeds.length; s += 1) {
+                        if (speeds[s] === savedSpeed) { speedIndex = s; break; }
+                    }
+                }
+
                 var resetRead = function () {
-                    readButton.textContent = "🔊 편지 읽어주기";
+                    readButton.textContent = "🔊 읽기";
                     readButton.setAttribute("aria-pressed", "false");
                 };
+
+                function applySpeed() {
+                    if (speedButton) {
+                        speedButton.textContent = speeds[speedIndex].toFixed(1) + "배속";
+                        speedButton.setAttribute("aria-label", "편지 낭독 속도 " + speeds[speedIndex].toFixed(1) + "배속");
+                    }
+                }
+
+                applySpeed();
+                if (speedButton) {
+                    speedButton.addEventListener("click", function () {
+                        speedIndex = (speedIndex + 1) % speeds.length;
+                        writeStore("father-letter-speed", String(speeds[speedIndex]));
+                        applySpeed();
+                        if (speech.speaking || speech.pending) {
+                            speech.cancel();
+                            resetRead();
+                        }
+                        showToast("낭독 속도 " + speeds[speedIndex].toFixed(1) + "배속");
+                    });
+                }
 
                 readButton.addEventListener("click", function () {
                     if (speech.speaking || speech.pending) {
@@ -3542,7 +3824,7 @@ window.APP_DATA = {
 
                     var utter = new Utterance(letterText);
                     utter.lang = "ko-KR";
-                    utter.rate = 0.94;
+                    utter.rate = 0.94 * speeds[speedIndex];
                     utter.pitch = 0.96;
                     var voices = speech.getVoices ? speech.getVoices() : [];
                     var korean = null;
@@ -3605,6 +3887,136 @@ window.APP_DATA = {
                 setText(heartCount, formatNumber(count));
                 floatHearts();
                 showToast("마음이 아버지께 닿았어요 💗 " + formatNumber(count) + "번째");
+            });
+        }
+    }
+
+    /* ---------------- 숨은 비밀 10개 ---------------- */
+    var secretState = { root: null, lastFocus: null };
+    var SECRETS = {
+        code: { emoji: "🔐", title: "숨은 코드를 찾았어요", text: "↑↑↓↓←→←→BA. 아버지의 50년도 이렇게 한 걸음씩 쌓인 시간입니다." },
+        love: { emoji: "💗", title: "사랑해", text: "말로 하기 부끄러우면 마음 버튼을 눌러도 됩니다. 오늘은 꼭 전해주세요." },
+        birthday: { emoji: "🎂", title: "오늘의 주인공", text: "1977년부터 지금까지, 한 번도 빠지지 않은 아버지의 생일입니다." },
+        meow: { emoji: "🐈", title: "야옹", text: "아버지 생신 축하드립니다 야옹~", meow: true },
+        fifty: { emoji: "50", title: "쉰 번째 비밀", text: "50은 숫자일 뿐. 아버지의 시간은 셀 수 없이 많습니다." },
+        seal: { emoji: "🕯️", title: "봉랍 인장", text: "편지 봉랍 안에는 ‘누나와 저’의 마음이 들어 있습니다." },
+        dday: { emoji: "📅", title: "D-day", text: "D-day는 숫자지만, 오늘 하루는 아버지의 날입니다." },
+        mark: { emoji: "✨", title: "쉰 번째 11월", text: "쉰 번째 11월 19일. 올해도, 내년에도 함께하고 싶습니다." },
+        hearts: { emoji: "💞", title: "마음 열 개", text: "마음이 열 개나 모였어요. 오늘은 아버지께 다 보내드립시다." },
+        film: { emoji: "🎬", title: "1분의 비밀", text: "영상 45초, 케이크의 촛불 다섯 개는 아버지의 다섯 번째 십 년입니다." }
+    };
+
+    function openSecret(item) {
+        var root = secretState.root;
+        if (!root || !item) { return; }
+        if (eggState.open) { closeEgg(); }
+        secretState.lastFocus = document.activeElement;
+        setText(byId("secret-emoji"), item.emoji);
+        setText(byId("secret-title"), item.title);
+        setText(byId("secret-text"), item.text);
+        root.hidden = false;
+        document.body.classList.add("secret-open");
+        var close = byId("secret-close");
+        if (close) { close.focus(); }
+        if (item.meow) { playMeow(); }
+    }
+
+    function closeSecret() {
+        var root = secretState.root;
+        if (!root || root.hidden) { return; }
+        root.hidden = true;
+        document.body.classList.remove("secret-open");
+        if (secretState.lastFocus && typeof secretState.lastFocus.focus === "function") {
+            secretState.lastFocus.focus();
+        }
+        secretState.lastFocus = null;
+    }
+
+    function initSecrets() {
+        var root = byId("secret");
+        if (!root) { return; }
+        secretState.root = root;
+        var close = byId("secret-close");
+        if (close) { close.addEventListener("click", closeSecret); }
+        root.addEventListener("click", function (event) {
+            var target = event.target;
+            if (target && target.hasAttribute && target.hasAttribute("data-secret-close")) {
+                closeSecret();
+            }
+        });
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && !root.hidden) { closeSecret(); }
+        });
+
+        var buffer = "";
+        function checkType(value) {
+            buffer = (buffer + String(value || "")).slice(-16);
+            var words = [["사랑해", SECRETS.love], ["생일", SECRETS.birthday], ["야옹", SECRETS.meow], ["50", SECRETS.fifty]];
+            for (var i = 0; i < words.length; i += 1) {
+                if (buffer.indexOf(words[i][0]) !== -1) {
+                    buffer = "";
+                    openSecret(words[i][1]);
+                    return;
+                }
+            }
+        }
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) { return; }
+            if (isTypingTarget(event.target)) { return; }
+            checkType(event.key);
+        });
+        document.addEventListener("compositionend", function (event) {
+            if (!isTypingTarget(event.target)) { checkType(event.data); }
+        });
+
+        var konami = [];
+        var code = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+        document.addEventListener("keydown", function (event) {
+            if (isTypingTarget(event.target)) { return; }
+            konami.push(event.key.length === 1 ? event.key.toLowerCase() : event.key);
+            konami = konami.slice(-code.length);
+            if (konami.join("|") === code.join("|")) {
+                konami = [];
+                openSecret(SECRETS.code);
+            }
+        });
+
+        function tapSecret(el, count, item) {
+            if (!el) { return; }
+            var stamps = [];
+            el.addEventListener("click", function () {
+                var now = Date.now();
+                stamps = stamps.filter(function (stamp) { return now - stamp < 2200; });
+                stamps.push(now);
+                if (stamps.length >= count) {
+                    stamps = [];
+                    openSecret(item);
+                }
+            });
+        }
+        tapSecret(byId("minibar"), 5, SECRETS.dday);
+        tapSecret(byId("fifty-watermark"), 3, SECRETS.mark);
+        tapSecret(document.querySelector(".letter__seal"), 3, SECRETS.seal);
+
+        var heartTaps = 0;
+        var heart = byId("heart-btn");
+        if (heart) {
+            heart.addEventListener("click", function () {
+                heartTaps += 1;
+                if (heartTaps >= 10) { heartTaps = 0; openSecret(SECRETS.hearts); }
+            });
+        }
+
+        var play = byId("video-play");
+        if (play) {
+            var hold = null;
+            var cancel = function () { if (hold !== null) { window.clearTimeout(hold); hold = null; } };
+            play.addEventListener("pointerdown", function () {
+                cancel();
+                hold = window.setTimeout(function () { hold = null; openSecret(SECRETS.film); }, 2200);
+            });
+            ["pointerup", "pointerleave", "pointercancel"].forEach(function (name) {
+                play.addEventListener(name, cancel);
             });
         }
     }
