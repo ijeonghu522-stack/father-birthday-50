@@ -1,0 +1,50 @@
+{
+  "base_date": "1977-11-19",
+  "now": {
+    "seconds_alive": 1545683429,
+    "days_alive": 17889,
+    "age_man": 48,
+    "age_korean": 50,
+    "birthdays_passed": 48,
+    "days_until_next_birthday": 8,
+    "is_birthday_today": false
+  },
+  "milestones": [
+    {
+      "label": "태어난 지 10,000일",
+      "date": "2005-04-06",
+      "days_remaining": -7889,
+      "passed": true
+    },
+    {
+      "label": "태어난 지 15,000일",
+      "date": "2018-12-14",
+      "days_remaining": -2889,
+      "passed": true
+    },
+    {
+      "label": "태어난 지 18,000일",
+      "date": "2027-03-02",
+      "days_remaining": 111,
+      "passed": false
+    },
+    {
+      "label": "태어난 지 20,000일",
+      "date": "2032-08-22",
+      "days_remaining": 2111,
+      "passed": false
+    },
+    {
+      "label": "50번째 생일",
+      "date": "2026-11-19",
+      "days_remaining": 8,
+      "passed": false
+    },
+    {
+      "label": "60번째 생일",
+      "date": "2036-11-19",
+      "days_remaining": 3661,
+      "passed": false
+    }
+  ]
+}
