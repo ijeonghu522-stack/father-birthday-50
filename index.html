@@ -973,6 +973,29 @@ img {
     color: var(--brown-mute);
 }
 
+.downloads {
+    width: 100%;
+    margin-top: 0.35rem;
+}
+
+.downloads[hidden] {
+    display: none;
+}
+
+.downloads__label {
+    margin-bottom: 0.55rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-align: center;
+    color: var(--brown-mute);
+}
+
+.downloads__row {
+    display: flex;
+    gap: 0.55rem;
+    width: 100%;
+}
+
 .video-card {
     width: 100%;
     max-width: 330px;
@@ -1416,6 +1439,14 @@ body::before {
                         <a class="ghost-btn" id="video-link-webm" href="./birthday50.webm" download hidden>WebM</a>
                     </div>
                     <p class="video-note">MP4는 아이폰에서도 바로 재생됩니다 · 15초</p>
+                    <div class="downloads" id="downloads">
+                        <p class="downloads__label">앱으로 받기</p>
+                        <div class="downloads__row">
+                            <a class="ghost-btn" href="https://ijeonghu522-stack.github.io/father-birthday-50/FatherBirthday.apk" download>🤖 Android APK</a>
+                            <a class="ghost-btn" href="https://ijeonghu522-stack.github.io/father-birthday-50/FatherBirthday.exe" download>💻 Windows EXE</a>
+                        </div>
+                        <p class="video-note">PC가 꺼져 있어도 내려받을 수 있어요</p>
+                    </div>
                     <p class="notify__status" id="notify-status" role="status" aria-live="polite"></p>
                     <div class="kakao" id="kakao-container" hidden></div>
                 </div>
@@ -1446,11 +1477,11 @@ body::before {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794397659;
+window.APP_BUILD_TS = 1794398158;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545684459,
+    "seconds_alive": 1545684958,
     "days_alive": 17889,
     "age_man": 48,
     "age_korean": 50,
@@ -2791,6 +2822,14 @@ window.APP_DATA = {
         });
     }
 
+    /* EXE(offline file://) 에서는 다운로드 링크가 동작하지 않으므로 숨깁니다. */
+    function initDownloads() {
+        var box = byId("downloads");
+        if (box && (window.location.protocol === "file:" || window.Capacitor)) {
+            box.hidden = true;
+        }
+    }
+
     /* ---------------- 부트 ---------------- */
     function init() {
         initDday();
@@ -2809,6 +2848,7 @@ window.APP_DATA = {
         initMusic();
         initShare();
         initVideoLink();
+        initDownloads();
         window.addEventListener("load", initKakao);
     }
 
