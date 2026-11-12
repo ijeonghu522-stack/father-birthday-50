@@ -1093,7 +1093,13 @@ img {
     font-size: 1.25rem;
     transform: rotate(-8deg);
     opacity: 0.92;
-    pointer-events: none;
+    z-index: 3;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ---------------- 토스트 ---------------- */
@@ -1958,7 +1964,7 @@ body.secret-open {
                     <p class="letter__to">아버지께</p>
                     <div class="letter__body" id="letter-body"></div>
                     <p class="letter__sign" id="letter-sign">2026년 11월 19일, 누나와 저 올림</p>
-                    <span class="letter__seal" aria-hidden="true">🎂</span>
+                    <button class="letter__seal" id="letter-seal" type="button" aria-label="편지 봉랍에 숨은 비밀">🎂</button>
                 </article>
 
                 <div class="letter__actions">
@@ -2011,7 +2017,7 @@ body.secret-open {
     <footer class="site-footer">
         <p id="footer-span">1977. 11. 19 — 2026. 11. 19</p>
         <p>딸 천다은 · 아들 천우진</p>
-        <p class="site-footer__hint">숨은 비밀 10개 · 아무 데나 눌러보세요</p>
+        <p class="site-footer__hint">숨은 비밀 10개 · 누르거나 길게 눌러보세요</p>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2043,11 +2049,11 @@ body.secret-open {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794482281;
+window.APP_BUILD_TS = 1794482858;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545769081,
+    "seconds_alive": 1545769658,
     "days_alive": 17890,
     "age_man": 48,
     "age_korean": 50,
@@ -4234,9 +4240,27 @@ window.APP_DATA = {
                 }
             });
         }
+        function tapSecretArea(area, target, count, item) {
+            if (!area || !target) { return; }
+            var stamps = [];
+            area.addEventListener("click", function (event) {
+                var node = event.target;
+                if (node && node.closest && node.closest("button,a,input,textarea,select,#fifty-number")) { return; }
+                var rect = target.getBoundingClientRect();
+                if (!event.clientX && !event.clientY) { return; }
+                if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) { return; }
+                var now = Date.now();
+                stamps = stamps.filter(function (stamp) { return now - stamp < 2200; });
+                stamps.push(now);
+                if (stamps.length >= count) {
+                    stamps = [];
+                    openSecret(item);
+                }
+            });
+        }
         tapSecret(byId("minibar"), 5, SECRETS.dday);
-        tapSecret(byId("fifty-watermark"), 3, SECRETS.mark);
-        tapSecret(document.querySelector(".letter__seal"), 3, SECRETS.seal);
+        tapSecret(byId("letter-seal"), 3, SECRETS.seal);
+        tapSecretArea(byId("fiftieth"), byId("fifty-watermark"), 3, SECRETS.mark);
 
         var heartTaps = 0;
         var heart = byId("heart-btn");
@@ -4259,6 +4283,84 @@ window.APP_DATA = {
                 play.addEventListener(name, cancel);
             });
         }
+
+        /* 터치 기기에서는 키보드 대신 길게 누르기로 같은 비밀을 엽니다. */
+        function holdSecret(el, delay, item) {
+            if (!el) { return; }
+            var timer = null;
+            var fired = false;
+            function stop() {
+                if (timer !== null) { window.clearTimeout(timer); timer = null; }
+            }
+            el.addEventListener("pointerdown", function (event) {
+                if (event.pointerType === "mouse" && event.button !== 0) { return; }
+                if (!secretState.root.hidden) { return; }
+                stop();
+                fired = false;
+                timer = window.setTimeout(function () {
+                    timer = null;
+                    fired = true;
+                    openSecret(item);
+                    window.setTimeout(function () { fired = false; }, 800);
+                }, delay);
+            });
+            ["pointerup", "pointerleave", "pointercancel"].forEach(function (name) {
+                el.addEventListener(name, stop);
+            });
+            el.addEventListener("click", function (event) {
+                if (!fired) { return; }
+                event.preventDefault();
+                event.stopPropagation();
+                fired = false;
+            }, true);
+        }
+        holdSecret(byId("heart-btn"), 1200, SECRETS.love);
+        holdSecret(byId("cake-stage"), 1200, SECRETS.birthday);
+        holdSecret(document.querySelector(".site-footer"), 1200, SECRETS.meow);
+        holdSecret(byId("fifty-number"), 1200, SECRETS.fifty);
+
+        /* 코나미 코드의 터치 버전: ↑↑↓↓←→←→ 스와이프. */
+        var swipeStart = null;
+        var swipes = [];
+        var lastTouchAt = 0;
+        function recordSwipe(dx, dy) {
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 35) { return; }
+            var direction = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up");
+            swipes.push(direction);
+            swipes = swipes.slice(-8);
+            if (swipes.join("|") === "up|up|down|down|left|right|left|right") {
+                swipes = [];
+                openSecret(SECRETS.code);
+            }
+        }
+        document.addEventListener("pointerdown", function (event) {
+            if (event.pointerType === "mouse" || !secretState.root.hidden) { return; }
+            if (isTypingTarget(event.target)) { return; }
+            swipeStart = { x: event.clientX, y: event.clientY };
+        });
+        document.addEventListener("pointerup", function (event) {
+            if (!swipeStart || Date.now() - lastTouchAt < 700) { swipeStart = null; return; }
+            var dx = event.clientX - swipeStart.x;
+            var dy = event.clientY - swipeStart.y;
+            swipeStart = null;
+            recordSwipe(dx, dy);
+        });
+        document.addEventListener("pointercancel", function () { swipeStart = null; });
+        document.addEventListener("touchstart", function (event) {
+            if (event.touches.length !== 1 || !secretState.root.hidden) { return; }
+            lastTouchAt = Date.now();
+            swipeStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+        }, { passive: true });
+        document.addEventListener("touchend", function (event) {
+            if (!swipeStart || !event.changedTouches.length) { return; }
+            lastTouchAt = Date.now();
+            var touch = event.changedTouches[0];
+            var dx = touch.clientX - swipeStart.x;
+            var dy = touch.clientY - swipeStart.y;
+            swipeStart = null;
+            recordSwipe(dx, dy);
+        }, { passive: true });
+        document.addEventListener("touchcancel", function () { swipeStart = null; });
     }
 
     /* ---------------- 부트 ---------------- */
