@@ -1974,6 +1974,7 @@ body.secret-open {
                                    width="720" height="1280" aria-label="누나와 저가 준비한 1분 축하 영상">
                                 <source src="./birthday50.mp4" type="video/mp4" />
                                 <source src="./birthday50.webm" type="video/webm" />
+                                <track id="video-captions" kind="subtitles" srclang="ko" label="한국어" src="./birthday50.ko.vtt" default />
                             </video>
                             <div class="video-card__cover" id="video-cover">
                                 <span class="video-card__kicker">누나와 저가 준비한</span>
@@ -1997,6 +1998,7 @@ body.secret-open {
                     <div class="video-links">
                         <a class="ghost-btn" id="video-link" href="./birthday50.mp4" download hidden>🎬 MP4 저장</a>
                         <a class="ghost-btn" id="video-link-webm" href="./birthday50.webm" download hidden>WebM</a>
+                        <button class="ghost-btn" id="caption-btn" type="button" aria-pressed="true">CC 자막 끄기</button>
                     </div>
                     <p class="video-note">MP4는 아이폰에서도 바로 재생됩니다 · 1분</p>
                     <div class="downloads" id="downloads">
@@ -2049,11 +2051,11 @@ body.secret-open {
 
 <script>
 /* 자동 생성 파일입니다. build.py 를 실행하면 덮어씁니다. */
-window.APP_BUILD_TS = 1794483241;
+window.APP_BUILD_TS = 1794483931;
 window.APP_DATA = {
   "base_date": "1977-11-19",
   "now": {
-    "seconds_alive": 1545770041,
+    "seconds_alive": 1545770731,
     "days_alive": 17890,
     "age_man": 48,
     "age_korean": 50,
@@ -3835,6 +3837,33 @@ window.APP_DATA = {
     }
 
     /* EXE(offline file://) 에서는 다운로드 링크가 동작하지 않으므로 숨깁니다. */
+    function initVideoCaptions() {
+        var video = byId("video-player");
+        var button = byId("caption-btn");
+        var trackEl = byId("video-captions");
+        if (!video || !button) {
+            return;
+        }
+        var track = trackEl && trackEl.track ? trackEl.track : (video.textTracks ? video.textTracks[0] : null);
+        if (!track) {
+            button.hidden = true;
+            return;
+        }
+        var enabled = readStore("father-video-captions") !== "off";
+        function apply() {
+            track.mode = enabled ? "showing" : "hidden";
+            button.textContent = enabled ? "CC 자막 끄기" : "CC 자막 켜기";
+            button.setAttribute("aria-pressed", enabled ? "true" : "false");
+        }
+        button.addEventListener("click", function () {
+            enabled = !enabled;
+            writeStore("father-video-captions", enabled ? "on" : "off");
+            apply();
+        });
+        video.addEventListener("loadedmetadata", apply);
+        apply();
+    }
+
     function initDownloads() {
         var box = byId("downloads");
         if (box && (window.location.protocol === "file:" || window.Capacitor)) {
@@ -4383,6 +4412,7 @@ window.APP_DATA = {
         initMusic();
         initShare();
         initVideoLink();
+        initVideoCaptions();
         initDownloads();
         window.addEventListener("load", initKakao);
     }

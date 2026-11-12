@@ -1,7 +1,7 @@
 /* 아버지의 50번째 생일 — 서비스 워커 (캐시 우선)
  * 첫 방문 이후에는 네트워크가 없어도 페이지가 열립니다.
  */
-var CACHE_NAME = "birthday50-v10";
+var CACHE_NAME = "birthday50-v11";
 var PRECACHE = ["./", "./index.html", "./manifest.json"];
 
 self.addEventListener("install", function (event) {
